@@ -1,8 +1,8 @@
+import { useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import {
   Box,
   Flex,
-  IconButton,
   Stack,
   Table,
   TableContainer,
@@ -14,6 +14,7 @@ import {
   Thead,
   Tr,
 } from "./UI";
+import { ActionItems, EditDialogBox } from "./components";
 
 import "./App.css";
 
@@ -31,6 +32,16 @@ function App() {
     fetchUsers();
   }, []);
 
+  const updatedUser = {
+    name: "",
+    username: "",
+    address: "",
+    email: "",
+    phone: "",
+    company: "",
+  };
+
+  const { onOpen, isOpen, onClose } = useDisclosure();
   return (
     <Flex as={"main"} h={"100%"} w={"100%"}>
       <Box as="section" bgColor={"purple.400"}>
@@ -68,14 +79,12 @@ function App() {
                   <Td>{user.phone}</Td>
                   <Td>{user.company}</Td>
                   <Td>
-                    <Flex>
-                      <IconButton
-                        variant=""
-                        colorScheme="blue"
-                        aria-label="Search database"
-                        icon={<>H</>}
-                      />
-                    </Flex>
+                    <ActionItems
+                      onDelete={() => {
+                        alert("on delete was called");
+                      }}
+                      onEdit={onOpen}
+                    />
                   </Td>
                 </Tr>
               ))}
@@ -87,6 +96,7 @@ function App() {
             </Tfoot>
           </Table>
         </TableContainer>
+        <EditDialogBox isOpen={isOpen} onClose={onClose} />
       </Box>
     </Flex>
   );
